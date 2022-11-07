@@ -1,0 +1,97 @@
+import bpy
+import random
+
+for obj in bpy.data.objects:
+    bpy.data.objects.remove(obj)
+    
+for mat in bpy.data.materials:
+    bpy.data.materials.remove(mat)
+    
+
+    
+def create_plank(height, width, thickness, angleX, angleY, angleZ, crossplankMoveY, crossplankMoveZ):
+    bpy.ops.mesh.primitive_cube_add(size=1, align='WORLD', location=(0, 0, 0), 
+    rotation=(angleX, angleY, angleZ), scale=(1, 1, 1))
+    bpy.ops.transform.resize(value=(thickness, width, height), orient_type='LOCAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, False, True), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
+    bpy.ops.transform.translate(value=(0, crossplankMoveY, (height/2+crossplankMoveZ)), orient_axis_ortho='X', orient_type='LOCAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, False, True), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
+
+fenceLength = 100
+posts = int((fenceLength/10)+1)
+crossPlanks = int(fenceLength/10)
+
+
+for i in range(fenceLength-1):
+    height = random.uniform(9.8,10.3)
+    width = random.uniform(0.9,1.1)
+    crossplankMoveY = 0
+    crossplankMoveZ = 0
+    thickness = random.uniform(0.2,0.3)
+    angleX = random.uniform(-0.005,0.005)
+    angleY = random.uniform(-0.03,0.03)
+    angleZ = random.uniform(-0.17,0.17)
+    gapY = 1.12 - width
+    create_plank(height, width, thickness, angleX, angleY, angleZ, crossplankMoveY, crossplankMoveZ)
+    bpy.ops.transform.translate(value=(0, (width+gapY)*i, 0), orient_axis_ortho='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, True, False), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
+    
+    material = bpy.data.materials.new('cubematerial')
+    material.diffuse_color = (random.uniform(0.333,0.4),random.uniform(0.133,0.233),
+    random.uniform(0,0.1),1)
+    bpy.context.object.data.materials.append(material)
+
+   
+for j in range(posts):
+    height = random.uniform(9.8,10.3)
+    width = random.uniform(0.9,1.1)
+    crossplankMoveY = 0
+    crossplankMoveZ = 0
+    thickness = 1
+    angleX = random.uniform(-0.005,0.005)
+    angleY = random.uniform(-0.03,0.03)
+    angleZ = random.uniform(-0.17,0.17)
+    gapY = 11 - width
+    postOffsetX=1
+    create_plank(height, width, thickness, angleX, angleY, angleZ, crossplankMoveY, crossplankMoveZ)
+    bpy.ops.transform.translate(value=(postOffsetX, (width+gapY)*j, 0), orient_axis_ortho='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, True, False), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
+    
+    material = bpy.data.materials.new('cubematerial')
+    material.diffuse_color = (random.uniform(0.333,0.4),random.uniform(0.133,0.233),
+    random.uniform(0,0.1),1)
+    bpy.context.object.data.materials.append(material)
+    
+for k in range(crossPlanks):
+    height = random.uniform(0.9,1.1)
+    width = 11
+    crossplankMoveY = (width/2)+0.5
+    crossplankMoveZ = 3.33 - (height/2)
+    thickness = 0.3
+    angleX = random.uniform(-0.005,0.005)
+    angleY = random.uniform(-0.03,0.03)
+    angleZ = 0
+    gapY = 11 - width
+    crossPlankOffsetX=0.3
+    create_plank(height, width, thickness, angleX, angleY, angleZ, crossplankMoveY, crossplankMoveZ)
+    bpy.ops.transform.translate(value=(crossPlankOffsetX, (width+gapY)*k, 0), orient_axis_ortho='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, True, False), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
+    
+    material = bpy.data.materials.new('cubematerial')
+    material.diffuse_color = (random.uniform(0.333,0.4),random.uniform(0.133,0.233),
+    random.uniform(0,0.1),1)
+    bpy.context.object.data.materials.append(material)
+    
+for l in range(crossPlanks):
+    height = random.uniform(0.9,1.1)
+    width = 11
+    crossplankMoveY = (width/2)+0.5
+    crossplankMoveZ = 6.66
+    thickness = 0.3
+    angleX = random.uniform(-0.005,0.005)
+    angleY = 0
+    angleZ = 0
+    gapY = 11 - width
+    crossPlankOffsetX=0.4
+    create_plank(height, width, thickness, angleX, angleY, angleZ, crossplankMoveY, crossplankMoveZ)
+    bpy.ops.transform.translate(value=(crossPlankOffsetX, (width+gapY)*l, 0), orient_axis_ortho='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, True, False), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
+    
+    material = bpy.data.materials.new('cubematerial')
+    material.diffuse_color = (random.uniform(0.333,0.4),random.uniform(0.133,0.233),
+    random.uniform(0,0.1),1)
+    bpy.context.object.data.materials.append(material)
